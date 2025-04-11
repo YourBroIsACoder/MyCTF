@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Cookies Crumble</title>
+</head>
+<body>
+  <h2>Login Portal</h2>
+  <p>Hint: Some clues only last for a session... 🍪</p>
+
+  <input type="text" id="username" placeholder="Username"><br><br>
+  <input type="password" id="password" placeholder="Password"><br><br>
+  <button onclick="checkLogin()">Login</button>
+
+  <p id="result"></p>
+
+  <script>
+    // Set hidden password in a cookie, but obfuscated
+    (function setCookieObfuscated() {
+      const key = String.fromCharCode(112, 114, 105, 118, 97, 116, 101); // "private"
+      const val = ['63','6f','6f','6b','69','65','5f','6d','6f','6e','73','74','65','72'].map(h => String.fromCharCode(parseInt(h, 16))).join('');
+      document.cookie = key + "=" + val + "; path=/";
+    })();
+
+    function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    function checkLogin() {
+      const user = document.getElementById("username").value;
+      const pass = document.getElementById("password").value;
+
+      const correctUser = "agent";
+      const hiddenPass = getCookie("private");  // retrieves "cookie_monster"
+      const flag = "FLAG{C00kie_R3v3al3d_Y0uR_Sk1llz}";
+
+      if (user === correctUser && pass === hiddenPass) {
+        document.getElementById("result").innerText = "✅ Flag: " + flag;
+      } else {
+        document.getElementById("result").innerText = "❌ Invalid credentials.";
+      }
+    }
+  </script>
+</body>
+</html>
